@@ -1,0 +1,55 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Mobile.master.cs" Inherits="ACS.SEC.RWB.DEMO.Site_Mobile" %>
+<%@ Register Src="~/ViewSwitcher.ascx" TagPrefix="friendlyUrls" TagName="ViewSwitcher" %>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <asp:ContentPlaceHolder runat="server" ID="HeadContent" />
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+        <asp:PlaceHolder runat="server" ID="phNavMobile">
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+                <div class="container">
+                    <a class="navbar-brand" runat="server" href="~/Default.aspx">應用程式名稱</a>
+
+                    <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                            title="切換導覽" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item"><a class="nav-link" runat="server" href="~/Default.aspx">首頁</a></li>
+                            <li class="nav-item"><a class="nav-link" runat="server" href="~/About.aspx">關於</a></li>
+                            <li class="nav-item"><a class="nav-link" runat="server" href="~/Contact.aspx">連絡人</a></li>
+                            <li class="nav-item"><a class="nav-link" runat="server" href="~/EquipState.aspx">設備狀況</a></li>
+                        </ul>
+
+                        <ul class="navbar-nav d-flex flex-row justify-content-center align-items-center w-100">
+                            <li class="nav-item me-3">
+                                <span class="navbar-text text-white-50">
+                                    <asp:Literal runat="server" ID="litUserNameMobile" />
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" runat="server" href="~/Logout.aspx">登出</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </asp:PlaceHolder>
+        <asp:ContentPlaceHolder runat="server" ID="FeaturedContent" />
+        <section class="content-wrapper main-content clear-fix">
+            <asp:ContentPlaceHolder runat="server" ID="MainContent" />
+        </section>
+        <friendlyUrls:ViewSwitcher runat="server" />
+    </div>
+    </form>
+</body>
+</html>
