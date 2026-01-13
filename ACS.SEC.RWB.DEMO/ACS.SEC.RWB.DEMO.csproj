@@ -231,11 +231,11 @@
     </Compile>
     <Compile Include="EquipState.aspx.cs">
       <DependentUpon>EquipState.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="EquipState.aspx.designer.cs">
       <DependentUpon>EquipState.aspx</DependentUpon>
     </Compile>
+    <Compile Include="EquipStateHelpers.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
