@@ -62,7 +62,7 @@
                             </span>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" runat="server" href="~/Logout.aspx">登出</a>
+                            <a class="nav-link" runat="server" href="~/Logout.aspx?confirm=1">登出</a>
                         </li>
                     </ul>
                 </div>
