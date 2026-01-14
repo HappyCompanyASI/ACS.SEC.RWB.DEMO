@@ -38,7 +38,7 @@
     <asp:PlaceHolder runat="server"  ID="phNav">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" runat="server" href="~/Default.aspx">應用程式名稱</a>
+                <a class="navbar-brand" runat="server" href="~/Default.aspx">Mr.OPX</a>
 
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
                         title="切換導覽" aria-controls="navbarSupportedContent"

@@ -229,6 +229,129 @@ namespace ACS.SEC.RWB.DEMO.CIPLib
                 return 0; // 發生錯誤時回傳 0
             }
         }
+        public static async Task<int> LoadTargetDataAsync()
+        {
+            try
+            {
+                // 檢查 WClient 是否已初始化
+                if (GlobalHelper.MyWClient == null)
+                {
+                    new ACS.CIP.API.Web.WCall.Util.Log(new Exception("GlobalHelper.MyWClient 尚未初始化"));
+                    return 0;
+                }
+
+                var tagList = new List<string> { "FI_14009" };
+                var startTime = "2000-01-01 00:00:00";
+
+                var result = await ACS.CIP.API.Web.WCall.Helper.Tags.GetTagLastValueFromUserGrpAsync(
+                    GlobalHelper.MyWClient,
+                    tagList,
+                    startTime,
+                    null,
+                    null
+                );
+
+                if (result.ok && result.data?.lastValue != null && result.data.lastValue.Count > 0)
+                {
+                    var row = result.data.lastValue[0];
+
+                    // 取得值(優先順序:custVal > digitalVal > stringVal)
+                    var value = row.custVal ?? row.digitalVal ?? (object)row.stringVal;
+
+                    if (value != null && double.TryParse(value.ToString(), out var numericValue))
+                    {
+                        return (int)(numericValue * 300); // 回傳整數值
+                    }
+                }
+
+                return 0; // 無數據時回傳 0
+            }
+            catch (Exception ex)
+            {
+                new ACS.CIP.API.Web.WCall.Util.Log(ex);
+                return 0; // 發生錯誤時回傳 0
+            }
+        }
+        public static async Task<double> LoadL1DataAsync()
+        {
+            try
+            {
+                // 檢查 WClient 是否已初始化
+                if (GlobalHelper.MyWClient == null)
+                {
+                    new ACS.CIP.API.Web.WCall.Util.Log(new Exception("GlobalHelper.MyWClient 尚未初始化"));
+                    return 0;
+                }
+
+                var tagList = new List<string> { "DEMO_enthalpy" };
+                var startTime = "2000-01-01 00:00:00";
+
+                var result = await ACS.CIP.API.Web.WCall.Helper.Tags.GetTagLastValueFromUserGrpAsync(
+                    GlobalHelper.MyWClient,
+                    tagList,
+                    startTime,
+                    null,
+                    null
+                );
+
+                if (result.ok && result.data?.lastValue != null && result.data.lastValue.Count > 0)
+                {
+                    var row = result.data.lastValue[0];
+
+                    // 取得值(優先順序:custVal > digitalVal > stringVal)
+                    var value = row.custVal ?? row.digitalVal ?? (object)row.stringVal;
+
+                    return value != null ? Convert.ToDouble(value) : 0;
+                }
+
+                return 0; // 無數據時回傳 0
+            }
+            catch (Exception ex)
+            {
+                new ACS.CIP.API.Web.WCall.Util.Log(ex);
+                return 0; // 發生錯誤時回傳 0
+            }
+        }
+        public static async Task<double> LoadL2DataAsync()
+        {
+            try
+            {
+                // 檢查 WClient 是否已初始化
+                if (GlobalHelper.MyWClient == null)
+                {
+                    new ACS.CIP.API.Web.WCall.Util.Log(new Exception("GlobalHelper.MyWClient 尚未初始化"));
+                    return 0;
+                }
+
+                var tagList = new List<string> { "DEMO_humid" };
+                var startTime = "2000-01-01 00:00:00";
+
+                var result = await ACS.CIP.API.Web.WCall.Helper.Tags.GetTagLastValueFromUserGrpAsync(
+                    GlobalHelper.MyWClient,
+                    tagList,
+                    startTime,
+                    null,
+                    null
+                );
+
+                if (result.ok && result.data?.lastValue != null && result.data.lastValue.Count > 0)
+                {
+                    var row = result.data.lastValue[0];
+
+                    // 取得值(優先順序:custVal > digitalVal > stringVal)
+                    var value = row.custVal ?? row.digitalVal ?? (object)row.stringVal;
+
+                    return value != null ? Convert.ToDouble(value) : 0;
+                }
+
+                return 0; // 無數據時回傳 0
+            }
+            catch (Exception ex)
+            {
+                new ACS.CIP.API.Web.WCall.Util.Log(ex);
+                return 0; // 發生錯誤時回傳 0
+            }
+        }
         #endregion
 
         #region Private

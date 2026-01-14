@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACS.SEC.RWB.DEMO.CIPLib;
+using System;
 using System.Threading.Tasks;
 using System.Web.Script.Services;
 using System.Web.Services;
@@ -35,52 +36,36 @@ namespace ACS.SEC.RWB.DEMO.Pages
         [WebMethod(EnableSession = true)]
         public static MonitorData GetRealtimeData()
         {
-            //var rand = new Random();
 
-            //// 1. 從 API 取得實際產量數據 (使用 Task.Run 安全地調用異步方法)
-            //var currentOutput = Task.Run(async () => await DemoHelpers.LoadOutputDataAsync()).GetAwaiter().GetResult();
-            //var currentTarget = 11305;
+            // 產量與目標數據 
+            var currentOutput = Task.Run(async () => await DemoHelpers.LoadOutputDataAsync()).GetAwaiter().GetResult();
+            var currentTarget = Task.Run(async () => await DemoHelpers.LoadTargetDataAsync()).GetAwaiter().GetResult();
 
-            //// 計算績效百分比 (達成率)
-            //var perf = ((double)currentOutput / currentTarget) * 100;
+            // 績效百分比
+            var perf = ((double)currentOutput / currentTarget) * 100;
 
-            //// 2. 模擬設備原始數值 (Raw Data)
-            //// 假設 Line 1 範圍在 45 ~ 52.5，Line 2 範圍在 42.5 ~ 50
-            //var l1 = 45 + (rand.NextDouble() * 7.5);
-            //var l2 = 42.5 + (rand.NextDouble() * 7.5);
+            // 即時監控
+            var l1 = Task.Run(async () => await DemoHelpers.LoadL1DataAsync()).GetAwaiter().GetResult();
+            var l2 = Task.Run(async () => await DemoHelpers.LoadL2DataAsync()).GetAwaiter().GetResult();
 
-            //// 3. 封裝並回傳數據
-            //return new MonitorData
-            //{
-            //    Output = currentOutput,
-            //    Target = currentTarget,
-            //    Perf = Math.Round(perf, 1),
-
-            //    // 折線圖顯示原始數值
-            //    Line1Value = Math.Round(l1, 2),
-            //    Line2Value = Math.Round(l2, 2),
-
-            //    // 儀表板顯示轉換後的百分比 (0-100)
-            //    // 這裡的算法應與您設備的警示範圍 (Min/Max) 對齊
-            //    Line1Gauge = Math.Round(((l1 - 45) / 7.5) * 100, 0),
-            //    Line2Gauge = Math.Round(((l2 - 42.5) / 7.5) * 100, 0),
-
-            //    TimeLabel = DateTime.Now.ToString("HH:mm:ss")
-            //};
-
+            // 封裝並回傳數據
             return new MonitorData
             {
-                Output = 0,
-                Target = 0,
-                Perf = 0,
-                Line1Value = 0,
-                Line1Gauge = 0,
-                Line2Value = 0,
-                Line2Gauge = 0,
+                // 產量目標績效
+                Output = currentOutput,
+                Target = currentTarget,
+                Perf = Math.Round(perf, 1),
+
+                // 折線圖
+                Line1Value = Math.Round(l1, 2),
+                Line2Value = Math.Round(l2, 2),
+
+                // 儀表板
+                Line1Gauge = Math.Round(l1, 0),
+                Line2Gauge = Math.Round(l2, 0),
+
                 TimeLabel = DateTime.Now.ToString("HH:mm:ss")
             };
-
-
         }
     }
 }

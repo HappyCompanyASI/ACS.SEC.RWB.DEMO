@@ -226,7 +226,7 @@
             chart.update();
         }
 
-        setInterval(updateDashboard, 2000);
+        setInterval(updateDashboard, 5000);
         updateDashboard();
 
         document.getElementById("btnReload").onclick = () => location.reload();
