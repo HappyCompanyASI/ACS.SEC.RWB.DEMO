@@ -7,7 +7,10 @@ namespace ACS.SEC.RWB.DEMO
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Response.Redirect("~/EquipState", true);
+            if (IsPostBack) 
+                return;
+            Response.Redirect("~/Pages/ProductionStatus.aspx", false);
+            Context.ApplicationInstance.CompleteRequest();
         }
     }
 }

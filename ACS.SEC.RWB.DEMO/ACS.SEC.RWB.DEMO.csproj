@@ -119,8 +119,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="About.aspx" />
-    <Content Include="Contact.aspx" />
+    <Content Include="Pages\EquipmentStatus.aspx" />
+    <Content Include="Pages\QualityStatus.aspx" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -139,7 +139,7 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Default.aspx" />
-    <Content Include="EquipState.aspx" />
+    <Content Include="Pages\ProductionStatus.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Login.aspx" />
@@ -207,20 +207,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="About.aspx.cs">
-      <DependentUpon>About.aspx</DependentUpon>
+    <Compile Include="Pages\EquipmentStatus.aspx.cs">
+      <DependentUpon>EquipmentStatus.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="About.aspx.designer.cs">
-      <DependentUpon>About.aspx</DependentUpon>
+    <Compile Include="Pages\EquipmentStatus.aspx.designer.cs">
+      <DependentUpon>EquipmentStatus.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Contact.aspx.cs">
-      <DependentUpon>Contact.aspx</DependentUpon>
+    <Compile Include="Pages\QualityStatus.aspx.cs">
+      <DependentUpon>QualityStatus.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Contact.aspx.designer.cs">
-      <DependentUpon>Contact.aspx</DependentUpon>
+    <Compile Include="Pages\QualityStatus.aspx.designer.cs">
+      <DependentUpon>QualityStatus.aspx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -229,17 +229,17 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="EquipState.aspx.cs">
-      <DependentUpon>EquipState.aspx</DependentUpon>
+    <Compile Include="Pages\ProductionStatus.aspx.cs">
+      <DependentUpon>ProductionStatus.aspx</DependentUpon>
     </Compile>
-    <Compile Include="EquipState.aspx.designer.cs">
-      <DependentUpon>EquipState.aspx</DependentUpon>
+    <Compile Include="Pages\ProductionStatus.aspx.designer.cs">
+      <DependentUpon>ProductionStatus.aspx</DependentUpon>
     </Compile>
-    <Compile Include="EquipStateHelpers.cs" />
+    <Compile Include="CIPLib\DemoHelpers.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="GlobalHelper.cs" />
+    <Compile Include="CIPLib\GlobalHelper.cs" />
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="Contact" Language="C#" 
-MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Contact.aspx.cs" Inherits="ACS.SEC.RWB.DEMO.Contact" %>
+MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Contact.aspx.cs" Inherits="ACS.SEC.RWB.DEMO.Pages.QualityStatus" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <main aria-labelledby="title">

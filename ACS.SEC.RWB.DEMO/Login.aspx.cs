@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Security.Principal;
 using System.Web.Security;
+using ACS.SEC.RWB.DEMO.CIPLib;
 
 namespace ACS.SEC.RWB.DEMO
 {
@@ -8,21 +9,6 @@ namespace ACS.SEC.RWB.DEMO
     {
         protected async void btnLogin_Click(object sender, EventArgs e)
         {
-            await ProcessLoginAsync();
-        }
-
-        /// <summary>
-        /// 處理登入流程
-        /// </summary>
-        private async Task ProcessLoginAsync()
-        {
-            System.Threading.Tasks.Task<
-                ACS.CIP.API.Web.WObj.RsltMsgBase<
-                ACS.CIP.API.Web.WObj.Data.Security.RsltLogin>> oRsltTasks = null;
-
-            ACS.CIP.API.Web.WObj.RsltMsgBase<
-                ACS.CIP.API.Web.WObj.Data.Security.RsltLogin> oRsltMsg = null;
-
             try
             {
                 // 隱藏錯誤訊息
@@ -33,45 +19,18 @@ namespace ACS.SEC.RWB.DEMO
                 txtPassword.Disabled = true;
                 btnLogin.Enabled = false;
 
-                // 呼叫 API 登入
-                oRsltTasks = GlobalHelper.MyWClient.LoginAsync(
+                var result = await DemoHelpers.ProcessLoginAsync(
                     txtUsername.Value,
                     txtPassword.Value);
-                oRsltMsg = await oRsltTasks;
-
-                if (oRsltMsg.ok == false)
+                if (!result.Success)
                 {
-                    // 登入失敗，顯示錯誤訊息
-                    if (oRsltMsg.errCode != null)
-                    {
-                        lblError.Text = GlobalHelper.GetErrCodeMsg(
-                            oRsltMsg.errCode,
-                            oRsltMsg.errMsg,
-                            oRsltMsg.ckPoint);
-                    }
-                    else
-                    {
-                        lblError.Text = "登入失敗";
-                    }
+                    lblError.Text = result.ErrorMessage;
                     lblError.Visible = true;
-                }
-                else
-                {
-                    // 登入成功,建立 Forms Authentication Ticket
-                    FormsAuthentication.SetAuthCookie(oRsltMsg.data.userName, false);
-
-                    // 設定 Session 並轉向
-                    Session["User"] = oRsltMsg.data.userName;
-                    Response.Redirect("EquipState.aspx", false);
-                    Context.ApplicationInstance.CompleteRequest();
                     return;
                 }
-            }
-            catch (Exception ex)
-            {
-                new ACS.CIP.API.Web.WCall.Util.Log(ex);
-                lblError.Text = "發生錯誤：" + ex.Message;
-                lblError.Visible = true;
+
+                //「優先導回 ReturnUrl」，沒有才用 web.config 的 defaultUrl
+                FormsAuthentication.RedirectFromLoginPage(result.UserName, false);
             }
             finally
             {

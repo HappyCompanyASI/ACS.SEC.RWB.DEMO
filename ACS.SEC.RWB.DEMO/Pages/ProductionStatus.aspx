@@ -1,4 +1,4 @@
-﻿<%@ Page Title="EquipState" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EquipState.aspx.cs" Inherits="ACS.SEC.RWB.DEMO.EquipState" %>
+﻿<%@ Page Title="ProductionStatus" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ProductionStatus.aspx.cs" Inherits="ACS.SEC.RWB.DEMO.Pages.ProductionStatus" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -171,7 +171,7 @@
         // --- 核心：對齊您的 MonitorData 結構 ---
         async function updateDashboard() {
             try {
-                const response = await fetch('EquipState.aspx/GetRealtimeData', {
+                const response = await fetch('ProductionStatus.aspx/GetRealtimeData', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include', // [關鍵] 讓 AJAX 請求攜帶目前的登入憑證 (Cookie)

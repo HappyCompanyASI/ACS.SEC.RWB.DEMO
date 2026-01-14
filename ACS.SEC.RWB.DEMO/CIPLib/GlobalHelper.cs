@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
-namespace ACS.SEC.RWB.DEMO
+namespace ACS.SEC.RWB.DEMO.CIPLib
 {
     /// <summary>
     /// 全域協助類別 (從 WinForms 移植)

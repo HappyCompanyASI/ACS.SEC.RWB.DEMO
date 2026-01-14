@@ -48,10 +48,12 @@
 
                 <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Default.aspx">首頁</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/About.aspx">關於</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Contact.aspx">連絡人</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/EquipState.aspx">設備狀況</a></li>
+                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Pages/ProductionStatus.aspx">生產狀況</a></li>
+                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Pages/QualityStatus.aspx">品質狀況</a></li>
+                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Pages/EquipmentStatus.aspx">設備狀況</a></li>
+                    <%--    <li class="nav-item"><a class="nav-link" runat="server" href="~/Pages/SafetyStatus.aspx">安全狀況</a></li>
+                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Pages/Utilities.aspx">公用系統</a></li>
+                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Pages/CostStatus.aspx">成本狀況</a></li>--%>
                     </ul>
 
                     <!-- 右側：顯示帳號 + 登出 -->

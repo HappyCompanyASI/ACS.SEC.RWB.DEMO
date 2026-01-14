@@ -7,11 +7,11 @@
 // </自動產生>
 //------------------------------------------------------------------------------
 
-namespace ACS.SEC.RWB.DEMO
+namespace ACS.SEC.RWB.DEMO.Pages
 {
 
 
-    public partial class EquipState
+    public partial class QualityStatus
     {
     }
 }
