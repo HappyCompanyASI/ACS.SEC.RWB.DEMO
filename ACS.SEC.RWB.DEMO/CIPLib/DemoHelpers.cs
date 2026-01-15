@@ -352,6 +352,27 @@ namespace ACS.SEC.RWB.DEMO.CIPLib
                 return 0; // 發生錯誤時回傳 0
             }
         }
+
+        // 產能比較用假數據方法（未來替換為真實 API）
+        public static async Task<List<int>> LoadCompareDataAsync(string date, string line)
+        {
+            // 模擬異步操作
+            await Task.Delay(10);
+
+            // 生成 24 小時的假數據（基礎值 + 隨機波動）
+            var random = new Random(date.GetHashCode() + line.GetHashCode());
+            var baseValue = line == "line1" ? 8 : 7; // Line1 和 Line2 的基礎產能不同
+            var data = new List<int>();
+
+            for (int hour = 0; hour < 24; hour++)
+            {
+                // 模擬產能波動：基礎值 ± 隨機波動（0-3）
+                var value = baseValue + random.Next(-2, 3);
+                data.Add(value);
+            }
+
+            return data;
+        }
         #endregion
 
         #region Private

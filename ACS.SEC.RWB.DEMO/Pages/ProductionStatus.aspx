@@ -101,8 +101,7 @@
                         <div class="filters">
                             <input id="filterDate" class="mini" type="date" value="2025-12-12" />
                             <select id="filterType" class="mini"><option value="day" selected>日報</option><option value="shift">班別</option><option value="hour">小時</option></select>
-                            <select id="filterLine" class="mini"><option value="all" selected>產線全部</option><option value="line1">Line1</option><option value="line2">Line2</option></select>
-                            <button id="btnReload" type="button" class="btn btn-sm btn-outline-secondary">重新載入</button>
+                            <select id="filterLine" class="mini"><option value="all" selected>顯示全部</option><option value="line1">Device1</option><option value="line2">Device2</option></select>
                         </div>
                         <div class="chart-pad">
                             <div class="chart-fixed-height"><canvas id="compareChart"></canvas></div>
@@ -163,9 +162,36 @@
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: "bottom" } } }
         });
 
+        // [Chart.js 說明] 產能比較圖表 - 柱狀圖配置
         const compareChart = new Chart(document.getElementById("compareChart"), {
-            type: 'bar', data: { labels: Array.from({ length: 24 }, (_, i) => i + 1), datasets: [{ label: '範例數據', data: Array(24).fill(0) }] },
-            options: { responsive: true, maintainAspectRatio: false }
+            type: 'bar',
+            data: {
+                labels: Array.from({ length: 24 }, (_, i) => i + 1), // X軸：1-24小時
+                datasets: [
+                    // Line1 當日數據（深橙色）
+                    { label: 'Device1@2025-12-12', data: Array(24).fill(0), backgroundColor: '#FF8C42', borderColor: '#FF8C42', borderWidth: 1 },
+                    // Line1 前日數據（淺橙色）
+                    { label: 'Device1@2025-12-11', data: Array(24).fill(0), backgroundColor: '#FFB380', borderColor: '#FFB380', borderWidth: 1 },
+                    // Line2 當日數據（深青色）
+                    { label: 'Device2@2025-12-12', data: Array(24).fill(0), backgroundColor: '#4FC3C8', borderColor: '#4FC3C8', borderWidth: 1 },
+                    // Line2 前日數據（淺青色）
+                    { label: 'Device2@2025-12-11', data: Array(24).fill(0), backgroundColor: '#8FD8DA', borderColor: '#8FD8DA', borderWidth: 1 }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom', // 圖例位置在底部
+                        labels: { font: { size: 12 } }
+                    }
+                },
+                scales: {
+                    x: { title: { display: true, text: '(小時)' } },
+                    y: { beginAtZero: true, title: { display: true, text: '產能' } }
+                }
+            }
         });
 
         // --- 核心：對齊您的 MonitorData 結構 ---
@@ -226,9 +252,77 @@
             chart.update();
         }
 
+        // [新增] 載入產能比較圖表數據
+        async function loadCompareChart() {
+            try {
+                const date = document.getElementById("filterDate").value;
+                const lineFilter = document.getElementById("filterLine").value;
+
+                const response = await fetch('ProductionStatus.aspx/GetCompareData', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ date: date, lineFilter: lineFilter })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const res = await response.json();
+                const data = res.d; // CompareDataResponse 物件
+
+                if (data) {
+                    // [Chart.js 說明] 更新圖表的 datasets
+                    // datasets[0] = Line1 當日, datasets[1] = Line1 前日
+                    // datasets[2] = Line2 當日, datasets[3] = Line2 前日
+
+                    // 根據產線篩選器決定要顯示哪些數據
+                    if (lineFilter === "all") {
+                        // 顯示全部產線
+                        compareChart.data.datasets[0].data = data.Line1Today || Array(24).fill(0);
+                        compareChart.data.datasets[0].label = `Device1@${data.CurrentDate}`;
+                        compareChart.data.datasets[1].data = data.Line1Yesterday || Array(24).fill(0);
+                        compareChart.data.datasets[1].label = `Device1@${data.PreviousDate}`;
+                        compareChart.data.datasets[2].data = data.Line2Today || Array(24).fill(0);
+                        compareChart.data.datasets[2].label = `Device2@${data.CurrentDate}`;
+                        compareChart.data.datasets[3].data = data.Line2Yesterday || Array(24).fill(0);
+                        compareChart.data.datasets[3].label = `Device2@${data.PreviousDate}`;
+                    } else if (lineFilter === "line1") {
+                        // 只顯示 Line1，Line2 設為空數據
+                        compareChart.data.datasets[0].data = data.Line1Today || Array(24).fill(0);
+                        compareChart.data.datasets[0].label = `Device1@${data.CurrentDate}`;
+                        compareChart.data.datasets[1].data = data.Line1Yesterday || Array(24).fill(0);
+                        compareChart.data.datasets[1].label = `Device1@${data.PreviousDate}`;
+                        compareChart.data.datasets[2].data = Array(24).fill(0);
+                        compareChart.data.datasets[3].data = Array(24).fill(0);
+                    } else if (lineFilter === "line2") {
+                        // 只顯示 Line2，Line1 設為空數據
+                        compareChart.data.datasets[0].data = Array(24).fill(0);
+                        compareChart.data.datasets[1].data = Array(24).fill(0);
+                        compareChart.data.datasets[2].data = data.Line2Today || Array(24).fill(0);
+                        compareChart.data.datasets[2].label = `Device2@${data.CurrentDate}`;
+                        compareChart.data.datasets[3].data = data.Line2Yesterday || Array(24).fill(0);
+                        compareChart.data.datasets[3].label = `Device2@${data.PreviousDate}`;
+                    }
+
+                    // [Chart.js 說明] 更新圖表顯示
+                    compareChart.update();
+                }
+            } catch (err) {
+                console.error("載入產能比較數據失敗:", err);
+            }
+        }
+
+        // 啟動即時監控更新
         setInterval(updateDashboard, 5000);
         updateDashboard();
 
-        document.getElementById("btnReload").onclick = () => location.reload();
+        // 初始載入產能比較圖表
+        loadCompareChart();
+
+        // [新增] 篩選器事件綁定
+        document.getElementById("filterDate").onchange = loadCompareChart;
+        document.getElementById("filterLine").onchange = loadCompareChart;
     </script>
 </asp:Content>

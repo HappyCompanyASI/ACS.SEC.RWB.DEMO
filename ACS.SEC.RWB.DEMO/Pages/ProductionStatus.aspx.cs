@@ -1,5 +1,6 @@
 ﻿using ACS.SEC.RWB.DEMO.CIPLib;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Script.Services;
 using System.Web.Services;
@@ -23,6 +24,17 @@ namespace ACS.SEC.RWB.DEMO.Pages
 
         //Panel 3 產線之產能比較
         public string TimeLabel { get; set; }  // 當前時間標籤 (HH:mm:ss)
+    }
+
+    // 產能比較數據格式
+    public class CompareDataResponse
+    {
+        public List<int> Line1Today { get; set; }       // Line1 當日24小時數據
+        public List<int> Line1Yesterday { get; set; }   // Line1 前一日24小時數據
+        public List<int> Line2Today { get; set; }       // Line2 當日24小時數據
+        public List<int> Line2Yesterday { get; set; }   // Line2 前一日24小時數據
+        public string CurrentDate { get; set; }         // 當前日期
+        public string PreviousDate { get; set; }        // 前一日期
     }
 
     [ScriptService] // [重要] 沒加這個，前端 fetch 就會報 401 錯誤
@@ -66,6 +78,52 @@ namespace ACS.SEC.RWB.DEMO.Pages
 
                 TimeLabel = DateTime.Now.ToString("HH:mm:ss")
             };
+        }
+
+        [WebMethod(EnableSession = true)]
+        public static CompareDataResponse GetCompareData(string date, string lineFilter)
+        {
+            // 解析日期
+            DateTime selectedDate;
+            if (!DateTime.TryParse(date, out selectedDate))
+            {
+                selectedDate = DateTime.Today;
+            }
+
+            // 計算前一天
+            DateTime previousDate = selectedDate.AddDays(-1);
+
+            // 根據 lineFilter 決定要載入哪些產線數據
+            var response = new CompareDataResponse
+            {
+                CurrentDate = selectedDate.ToString("yyyy-MM-dd"),
+                PreviousDate = previousDate.ToString("yyyy-MM-dd")
+            };
+
+            // 載入數據（使用假數據）
+            if (lineFilter == "all" || lineFilter == "line1")
+            {
+                response.Line1Today = Task.Run(async () =>
+                    await DemoHelpers.LoadCompareDataAsync(response.CurrentDate, "line1")
+                ).GetAwaiter().GetResult();
+
+                response.Line1Yesterday = Task.Run(async () =>
+                    await DemoHelpers.LoadCompareDataAsync(response.PreviousDate, "line1")
+                ).GetAwaiter().GetResult();
+            }
+
+            if (lineFilter == "all" || lineFilter == "line2")
+            {
+                response.Line2Today = Task.Run(async () =>
+                    await DemoHelpers.LoadCompareDataAsync(response.CurrentDate, "line2")
+                ).GetAwaiter().GetResult();
+
+                response.Line2Yesterday = Task.Run(async () =>
+                    await DemoHelpers.LoadCompareDataAsync(response.PreviousDate, "line2")
+                ).GetAwaiter().GetResult();
+            }
+
+            return response;
         }
     }
 }

@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%: Page.Title %> - 我的 ASP.NET 應用程式</title>
+    <title><%: Page.Title %> - Mr.OPX</title>
 
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
@@ -76,7 +76,7 @@
         <asp:ContentPlaceHolder ID="MainContent" runat="server"></asp:ContentPlaceHolder>
         <hr />
         <footer>
-            <p>&copy; <%: DateTime.Now.Year %> - 我的 ASP.NET 應用程式</p>
+            <p>&copy; <%: DateTime.Now.Year %> - Mr.OPX</p>
         </footer>
     </div>
 </form>
