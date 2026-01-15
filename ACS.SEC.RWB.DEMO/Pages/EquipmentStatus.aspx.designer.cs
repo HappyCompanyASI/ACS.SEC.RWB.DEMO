@@ -11,7 +11,7 @@ namespace ACS.SEC.RWB.DEMO.Pages
 {
 
 
-    public partial class About
+    public partial class EquipmentStatus
     {
     }
 }
